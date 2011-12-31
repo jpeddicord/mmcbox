@@ -3,8 +3,36 @@ body {
 	font-size: 62.5%;
 }
 
+header {
+	width: 828px;
+	margin: 5px auto;
+	border: 1px solid #ddd;
+	padding: 6px;
+}
+
+h1 {
+	font-size: 2em;
+	margin: 0;
+	color: #b00;
+}
+
+h1 span {
+	color: #999;
+}
+
+header a:link, header a:visited {
+	float: right;
+	text-decoration: none;
+	color: #444;
+	font-weight: bold;
+}
+
 #content {
-	font-size: 1.2em;
+	width: 800px;
+	margin: 5px auto;
+	padding: 20px;
+	border: 1px solid #ccc;
+	font-size: 1.4em;
 }
 
 
@@ -17,16 +45,26 @@ body {
 
 #login h1 {
 	font-size: 3em;
-	margin: 20px 0 50px 20px;
-	color: #b00;
-}
-
-#login h1 span {
-	color: #bbb;
+	margin: 20px 0 30px 20px;
 }
 
 #login div {
 	font-size: 1.2em;
+}
+
+#login .ui-widget {
+	float: right;
+	margin: 10px 10px 20px 0;
+	font-size: 1.4em;
+}
+
+#login .ui-state-highlight {
+	padding: 5px;
+}
+
+#login .ui-icon {
+	float: left;
+	margin-right: 5px;
 }
 
 #login #info {

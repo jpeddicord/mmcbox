@@ -3,6 +3,14 @@
 {% block body %}
 <div id="login">
 	<h1>mmc<span>box</span></h1>
+	{% for msg in get_flashed_messages() %}
+	<div class="ui-widget">
+		<p class="ui-state-highlight ui-corner-all">
+			<span class="ui-icon ui-icon-alert"></span>
+			{{ msg }}
+		</p>
+	</div>
+	{% endfor %}
 
 	<p id="info">
 		mmcbox is a site for OSU MMC students (and others!) to create
@@ -15,10 +23,9 @@
 		this site is not affiliated with The Ohio State University.
 		<br/><br/>
 		source code for this site will be made available online soon.
-		if you'd like to see it in advance (or want to help out), get in touch!
 	</p>
 
-	<form action="/login" method="post">
+	<form action="" method="post">
 		<input type="text" name="email" placeholder="email" />
 		<input type="password" name="password" placeholder="password" />
 		<input type="submit" value="Sign In" />

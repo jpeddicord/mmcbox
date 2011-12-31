@@ -22,7 +22,7 @@ def index():
         return redirect(url_for('new_site'))
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/account/login', methods=['GET', 'POST'])
 @templated()
 def login():
     if request.method == 'POST':
@@ -30,10 +30,12 @@ def login():
         if user and user.authenticate(request.form['password']):
             login_user(user)
             return redirect(request.args.get('next') or url_for('index'))
+        else:
+            flash("Invalid username or password.")
     return None
 
 
-@app.route('/logout')
+@app.route('/account/logout')
 @login_required
 def logout():
     logout_user()
@@ -41,6 +43,7 @@ def logout():
 
 
 @app.route('/account/password', methods=['GET', 'POST'])
+@login_required
 @templated()
 def change_password():
     pass
@@ -57,6 +60,7 @@ def activate():
 
 
 @app.route('/site/new')
+@login_required
 @templated()
 def new_site():
     # check for an existing site and deny
@@ -79,6 +83,7 @@ def new_site():
 
 
 @app.route('/site/<domain>/')
+@login_required
 @templated()
 def browse_files(domain):
     w = Website.query.filter_by(domain=domain).first()
@@ -87,15 +92,19 @@ def browse_files(domain):
 
 
 @app.route('/site/<domain>/upload', methods=['POST'])
+@login_required
 def upload_file(domain):
     pass
 
 
 @app.route('/site/<domain>/delete', methods=['POST'])
+@login_required
 def delete_file(domain):
     pass
 
 
 @app.route('/site/<domain>/rename', methods=['POST'])
+@login_required
 def rename_file(domain):
     pass
+
