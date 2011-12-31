@@ -1,5 +1,30 @@
-{% extends 'layout.html %}
+{% extends 'layout.html' %}
 
 {% block body %}
-Login form, lol
+<div id="login">
+	<h1>mmc<span>box</span></h1>
+
+	<p id="info">
+		mmcbox is a site for OSU MMC students (and others!) to create
+		and upload websites to learn about the web or show off.
+		<br/><br/>
+		the site is being actively developed. things will change,
+		and some things may be completely broken.
+		<br/><br/>
+		questions and comments should be directed to jacob at peddicord dot net.
+		this site is not affiliated with The Ohio State University.
+		<br/><br/>
+		source code for this site will be made available online soon.
+		if you'd like to see it in advance (or want to help out), get in touch!
+	</p>
+
+	<form action="/login" method="post">
+		<input type="text" name="email" placeholder="email" />
+		<input type="password" name="password" placeholder="password" />
+		<input type="submit" value="Sign In" />
+
+		<p>Forgot your password, or need an account? Contact jacob at peddicord dot net.</p>
+	</form>
+
+</div>
 {% endblock %}

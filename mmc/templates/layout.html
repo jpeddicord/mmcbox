@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title>mmcbox</title>
-		<link rel="stylesheet" media="screen" href="{{ url_for('static', 'style.css') }}" />
+		<link rel="stylesheet" media="screen" href="{{ url_for('static', filename='style.css') }}" />
 	</head>
 
 	<body>
@@ -13,7 +13,15 @@
 		</header>
 		{% endblock %}
 
+		{% for category, msg in get_flashed_messages(with_categories=true) %}
+			<p class="flash-{{ category }}">{{ msg }}</p>
+		{% endfor %}
 
+		<section id="content">
+		{% block content %}
+			No content.
+		{% endblock %}
+		</section>
 		{% endblock %}
 	</body>
 </html>

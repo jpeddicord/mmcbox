@@ -1,9 +1,13 @@
 from hashlib import sha256
+from os import mkdir
+from os.path import join, exists
 from random import randint
 
+from flask import url_for
 from flask.ext.login import UserMixin
+from werkzeug import secure_filename
 
-from mmc import db, login_manager
+from mmc import app, db, login_manager
 
 
 class User(db.Model, UserMixin):
@@ -21,23 +25,36 @@ class User(db.Model, UserMixin):
         check = sha256(salt + password)
         return check.hexdigest() == self.password[8:]
 
-    def change_password(self, password):
+    def set_password(self, password):
         # generate a salt
         salt = ''.join([chr(ord('a') + randint(0, 25)) for c in range(8)])
         # store the digest
         digest = sha256(salt + password)
         self.password = salt + digest.hexdigest()
 
-    @login_manager.user_loader
-    @classmethod
-    def load_user(cls, userid):
-        return User.get(userid)
+
+@login_manager.user_loader
+def load_user(userid):
+    return User.query.get(userid)
+
 
 class Website(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', backref='websites')
     domain = db.Column(db.String(64), unique=True)
     storage_limit = db.Column(db.Integer)
     file_limit = db.Column(db.Integer)
 
     def calculate_size(self):
         return 0
+
+    def url(self):
+        return url_for('browse_files', domain=self.domain)
+
+    def get_dir(self):
+        path = join(app.config['SITES_DIR'], secure_filename(self.domain))
+        if not exists:
+            os.mkdir(path)
+        return path
+

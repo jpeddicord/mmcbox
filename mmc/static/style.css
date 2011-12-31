@@ -2,3 +2,69 @@ body {
 	font-family: Helvetica, sans-serif;
 	font-size: 62.5%;
 }
+
+#content {
+	font-size: 1.2em;
+}
+
+
+/** Login Form **/
+#login {
+	width: 600px;
+	border: 1px solid #ccc;
+	margin: auto;
+}
+
+#login h1 {
+	font-size: 3em;
+	margin: 20px 0 50px 20px;
+	color: #b00;
+}
+
+#login h1 span {
+	color: #bbb;
+}
+
+#login div {
+	font-size: 1.2em;
+}
+
+#login #info {
+	float: left;
+	margin-left: 20px;
+	padding: 5px;
+	width: 40%;
+	background-color: #ccc;
+	border: 1px solid #bbb;
+	font-size: 1.6em;
+	color: #444;
+}
+
+#login form {
+	width: 300px;
+	margin: 150px 0 100px 299px;
+	padding: 10px 0 0 0;
+	border: 1px solid #bbb;
+	border-right: none;
+}
+
+#login input[type="text"], #login input[type="password"] {
+	width: 280px;
+	border: 1px solid #bbb;
+	border-right: none;
+	font-size: 2.5em;
+	margin-left: 20px;
+	padding: 3px;
+}
+
+#login input[type="submit"] {
+	margin-left: 20px;
+	font-size: 2.6em;
+	padding: 5px;
+}
+
+#login form p {
+	margin: 20px;
+	clear: right;
+	font-size: 1.2em;
+}
