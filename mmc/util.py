@@ -1,9 +1,15 @@
+import os.path
 from functools import wraps
 
 from flask import request, render_template, abort
 from flask.ext.login import current_user
 
+from mmc import app
 from mmc.models import Website
+
+
+class SecurityError(RuntimeError):
+    pass
 
 
 def templated(template=None):
@@ -33,4 +39,13 @@ def check_domain():
                 if w and w.user.id == current_user.id:
                     return f(*args, **kwargs)
             return abort(404)
+
+
+def filesystem_path(domain, path):
+    """Ensure path is inside domain's site directory."""
+    base = os.path.join(app.config['SITES_DIR'], domain) + '/'
+    full = os.path.abspath(os.path.join(base, path))
+    if not full.startswith(base) and base != full + '/':
+        raise SecurityError("{0} is not in {1}".format(full, base))
+    return full
 

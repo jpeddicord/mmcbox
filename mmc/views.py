@@ -9,7 +9,7 @@ from flask.ext.login import login_required, login_user, logout_user, current_use
 from mmc import app, db
 from mmc.forms import SiteForm
 from mmc.models import User, Website
-from mmc.util import templated, check_domain
+from mmc.util import templated, check_domain, filesystem_path
 
 
 @app.route('/')
@@ -82,12 +82,14 @@ def new_site():
     return dict(form=form)
 
 
-@app.route('/site/<domain>/')
+@app.route('/site/<domain>/files/')
+@app.route('/site/<domain>/files/<path:path>')
 @login_required
 @templated()
-def browse_files(domain):
+def browse_files(domain, path=''):
     w = Website.query.filter_by(domain=domain).first()
-    for root, dirs, files in os.walk(w.get_dir()):
+    d = filesystem_path(domain, path)
+    for root, dirs, files in os.walk(d):
         return dict(dirs=dirs, files=files)
 
 

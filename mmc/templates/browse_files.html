@@ -1,6 +1,58 @@
 {% extends 'layout.html' %}
 
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" media="screen" href="{{ url_for('static', filename='browser.css') }}" />
+
+<script type="text/javascript">
+	$(function() {
+		$('#newfile').button({
+			icons: {
+				primary: 'ui-icon-document'
+			}
+		});
+		$('#newfolder').button({
+			icons: {
+				primary: 'ui-icon-folder-open'
+			}
+		});
+		$('#upload').button({
+			icons: {
+				primary: 'ui-icon-circle-arrow-n'
+			}
+		});
+
+	});
+</script>
+{% endblock %}
+
 {% block content %}
-{{ dirs }}
-{{ files }}
+<div class="ui-widget-header">
+	<button id="newfile">New File</button>
+	<button id="newfolder">New Folder</button>
+	<button id="upload">Upload</button>
+</div>
+
+<ul id="browser">
+	{% for d in dirs %}
+	<li class="folder">
+		<ul>
+			<li class="delete">delete</li>
+			<li class="rename">rename</li>
+		</ul>
+		<a href="{{ d }}/" class="ui-button-content">{{ d }}/</a>
+	</li>
+	{% endfor %}
+
+	{% for f in files %}
+	<li class="file">
+		<ul>
+			<li class="delete">delete</li>
+			<li class="rename">rename</li>
+		</ul>
+		<a href="{{ f }}">{{ f }}</a>
+	</li>
+	{% endfor %}
+</ul>
+
 {% endblock %}
