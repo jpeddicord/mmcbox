@@ -29,16 +29,16 @@ def templated(template=None):
     return decorator
 
 
-def check_domain():
-    def decorator(f):
-        @wraps(f)
-        def decorated_function(*args, **kwargs):
-            domain = request.view_args.get('domain')
-            if domain:
-                w = Website.query.filter_by(domain=domain).first()
-                if w and w.user.id == current_user.id:
-                    return f(*args, **kwargs)
-            return abort(404)
+def check_domain(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        domain = request.view_args.get('domain')
+        if domain:
+            w = Website.query.filter_by(domain=domain).first()
+            if w and w.user.id == current_user.id:
+                return f(*args, **kwargs)
+        return abort(404)
+    return decorated_function
 
 
 def filesystem_path(domain, path):

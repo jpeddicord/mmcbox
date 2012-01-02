@@ -61,6 +61,7 @@ def activate():
 
 @app.route('/site/new')
 @login_required
+@check_domain
 @templated()
 def new_site():
     # check for an existing site and deny
@@ -85,28 +86,41 @@ def new_site():
 @app.route('/site/<domain>/files/')
 @app.route('/site/<domain>/files/<path:path>')
 @login_required
+@check_domain
 @templated()
 def browse_files(domain, path=''):
     w = Website.query.filter_by(domain=domain).first()
     d = filesystem_path(domain, path)
     for root, dirs, files in os.walk(d):
-        return dict(dirs=dirs, files=files)
+        return dict(domain=domain, path=path, dirs=dirs, files=files,
+                    join=os.path.join)
+
+
+@app.route('/site/<domain>/edit/<path:path>')
+@login_required
+@check_domain
+@templated()
+def edit_file(domain, path):
+    pass
 
 
 @app.route('/site/<domain>/upload', methods=['POST'])
 @login_required
+@check_domain
 def upload_file(domain):
     pass
 
 
 @app.route('/site/<domain>/delete', methods=['POST'])
 @login_required
+@check_domain
 def delete_file(domain):
     pass
 
 
 @app.route('/site/<domain>/rename', methods=['POST'])
 @login_required
+@check_domain
 def rename_file(domain):
     pass
 

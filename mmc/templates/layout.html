@@ -1,4 +1,4 @@
-<!doctype>
+<!doctype html>
 <html>
 	<head>
 		{% block head %}
@@ -16,6 +16,7 @@
 		<header>
 		<a href="{{ url_for('logout') }}">logout</a>
 		<h1>mmc<span>box</span></h1>
+		{% block headercontent %}{% endblock %}
 		</header>
 		{% endblock %}
 

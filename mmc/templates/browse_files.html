@@ -50,7 +50,7 @@
 			<li class="delete">delete</li>
 			<li class="rename">rename</li>
 		</ul>
-		<a href="{{ f }}">{{ f }}</a>
+		<a href="{{ url_for('edit_file', domain=domain, path=join(path, f)) }}">{{ f }}</a>
 	</li>
 	{% endfor %}
 </ul>
