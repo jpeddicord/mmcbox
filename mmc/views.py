@@ -7,7 +7,7 @@ from flask import url_for
 from flask.ext.login import login_required, login_user, logout_user, current_user
 
 from mmc import app, db
-from mmc.forms import SiteForm
+from mmc.forms import SiteForm, ChangePasswordForm
 from mmc.models import User, Website
 from mmc.util import templated, check_domain, filesystem_path
 
@@ -46,7 +46,17 @@ def logout():
 @login_required
 @templated()
 def change_password():
-    pass
+    form = ChangePasswordForm()
+    if form.validate_on_submit():
+        current_user.set_password(form.password.data)
+        db.session.add(current_user)
+        db.session.commit()
+        flash("Password changed.")
+        return redirect(url_for('index'))
+
+    print form.errors
+    return dict(form=form)
+
 
 
 @app.route('/account/activate')
@@ -61,7 +71,6 @@ def activate():
 
 @app.route('/site/new')
 @login_required
-@check_domain
 @templated()
 def new_site():
     # check for an existing site and deny
@@ -101,7 +110,11 @@ def browse_files(domain, path=''):
 @check_domain
 @templated()
 def edit_file(domain, path):
-    pass
+    w = Website.query.filter_by(domain=domain).first()
+    fname = filesystem_path(domain, path)
+    #TODO: check file size, text editable, etc
+    with open(fname) as f:
+        return dict(file_content=f.read())
 
 
 @app.route('/site/<domain>/upload', methods=['POST'])

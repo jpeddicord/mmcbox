@@ -49,3 +49,9 @@ def filesystem_path(domain, path):
         raise SecurityError("{0} is not in {1}".format(full, base))
     return full
 
+
+def is_text_editable(path):
+    """Check if a file is something we can easily edit."""
+    return False
+
+

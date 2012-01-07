@@ -1,8 +1,19 @@
+header {
+	margin: 0;
+	padding: 0;
+	border: none;
+	width: 100%;
+}
+
+#content {
+	border: none;
+}
+
 #editor {
 	position: absolute;
 	left: 0;
 	right: 0;
-	top: 50px;
+	top: 40px;
 	bottom: 0;
 	margin: 0;
 	padding: 0;

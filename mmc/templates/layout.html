@@ -15,13 +15,21 @@
 		{% block header %}
 		<header>
 		<a href="{{ url_for('logout') }}">logout</a>
+		<a href="{{ url_for('change_password') }}">change password</a>
 		<h1>mmc<span>box</span></h1>
 		{% block headercontent %}{% endblock %}
 		</header>
 		{% endblock %}
 
-		{% for category, msg in get_flashed_messages(with_categories=true) %}
-			<p class="flash-{{ category }}">{{ msg }}</p>
+		{% for msg in get_flashed_messages() %}
+		<div class="message">
+			<div class="ui-widget">
+				<p class="ui-state-highlight ui-corner-all">
+					<span class="ui-icon ui-icon-info"></span>
+					{{ msg }}
+				</p>
+			</div>
+		</div>
 		{% endfor %}
 
 		<section id="content">

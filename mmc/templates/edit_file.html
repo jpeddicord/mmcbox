@@ -12,7 +12,7 @@
 <script>
 window.onload = function() {
 	var editor = ace.edit('editor');
-	editor.setTheme('ace/theme/clouds');
+	editor.setTheme('ace/theme/tomorrow');
 	var mode = require('ace/mode/html').Mode;
 	editor.getSession().setMode(new mode());
 }
@@ -25,7 +25,5 @@ window.onload = function() {
 {% endblock %}
 
 {% block content %}
-<pre id="editor">
-{{ file_content }}
-</pre>
+<pre id="editor">{{ file_content }}</pre>
 {% endblock %}

@@ -5,9 +5,10 @@ from random import randint
 
 from flask import url_for
 from flask.ext.login import UserMixin
+from flask.ext.mail import Message
 from werkzeug import secure_filename
 
-from mmc import app, db, login_manager
+from mmc import app, db, login_manager, mail
 
 
 class User(db.Model, UserMixin):
@@ -18,6 +19,24 @@ class User(db.Model, UserMixin):
     staff = db.Column(db.Boolean, default=False)
     storage_limit = db.Column(db.Integer)
 
+    @staticmethod
+    def generate_random_string(length):
+        return ''.join([chr(ord('a') + randint(0, 25)) for c in range(length)])
+
+    @classmethod
+    def create_user(cls, email):
+        user = cls()
+        user.email = email
+        user.activation = User.generate_random_string(16)
+        db.session.add(user)
+        db.session.commit()
+
+    def __str__(self):
+        return self.email
+
+    def __repr__(self):
+        return "<User '{0}'>".format(self.email)
+
     def authenticate(self, password):
         # first 8 characters are the salt
         salt = self.password[:8]
@@ -27,10 +46,19 @@ class User(db.Model, UserMixin):
 
     def set_password(self, password):
         # generate a salt
-        salt = ''.join([chr(ord('a') + randint(0, 25)) for c in range(8)])
+        salt = User.generate_random_string(8)
         # store the digest
         digest = sha256(salt + password)
         self.password = salt + digest.hexdigest()
+
+    def mail_activation(self):
+        """Send an activation email."""
+
+        msg = Message("mmcbox account activation",
+                      sender=app.config['DEFAULT_MAIL_SENDER'])
+        msg.add_recipient(self.email)
+        msg.body = "your activation code is {0}".format(self.activation)
+        mail.send(msg)
 
 
 @login_manager.user_loader

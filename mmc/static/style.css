@@ -21,8 +21,9 @@ h1 span {
 	color: #999;
 }
 
-header a:link, header a:visited {
+header > a:link, header > a:visited {
 	float: right;
+	margin: 0 0 0 8px;
 	text-decoration: none;
 	color: #444;
 	font-weight: bold;
@@ -36,3 +37,33 @@ header a:link, header a:visited {
 	font-size: 1.4em;
 }
 
+.message .ui-widget {
+	margin: 10px;
+}
+
+.message .ui-state-highlight {
+	padding: 5px;
+}
+
+.message .ui-icon {
+	float: left;
+	margin-right: 5px;
+}
+
+body > .message {
+	width: 840px;
+	margin: 5px auto;
+	font-size: 1.3em;
+}
+
+form label {
+	display: block;
+}
+
+form input[type="text"], input[type="password"] {
+	width: 300px;
+	padding: 3px;
+	border: 1px solid #999;
+	color: #333;
+	font-size: 1.2em;
+}

@@ -1,0 +1,10 @@
+{% extends 'layout.html' %}
+{% from "_forms.html" import render_field %}
+
+{% block content %}
+<form action="" method="post">
+	{{ form.csrf }}
+	{{ render_field(form.domain) }}
+	<input type="submit" value="Create" />
+</form>
+{% endblock %}
