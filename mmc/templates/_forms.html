@@ -1,14 +1,26 @@
 {% macro render_field(field) %}
-<p class="field {% if field.errors %}errors{% endif %}">
-{{ field.label }}
-{{ field(**kwargs)|safe }}
-
 {% if field.errors %}
-<ul>
+
+	<div class="clearfix error">
+	{{ field.label }}
+	<div class="input">
+	{{ field(class_="error", **kwargs)|safe }}
+	<span class="help-inline">
 	{% for error in field.errors %}
-	<li>{{ error }}</li>
+	{{ error }}
 	{% endfor %}
-</ul>
+	</span>
+	</div>
+	</div>
+
+{% else %}
+
+	<div class="clearfix">
+	{{ field.label }}
+	<div class="input">
+	{{ field(**kwargs)|safe }}
+	</div>
+	</div>
+
 {% endif %}
-</p>
 {% endmacro %}

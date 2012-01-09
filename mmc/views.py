@@ -28,7 +28,12 @@ def login():
     if request.method == 'POST':
         user = User.query.filter_by(email=request.form['email']).first()
         if user and user.authenticate(request.form['password']):
+            # login
             login_user(user)
+            # clear their activation
+            user.activation = None
+            db.session.add(user)
+            db.session.commit()
             return redirect(request.args.get('next') or url_for('index'))
         else:
             flash("Invalid username or password.")
@@ -49,27 +54,32 @@ def change_password():
     form = ChangePasswordForm()
     if form.validate_on_submit():
         current_user.set_password(form.password.data)
+        current_user.activation = None
         db.session.add(current_user)
         db.session.commit()
         flash("Password changed.")
         return redirect(url_for('index'))
 
-    print form.errors
     return dict(form=form)
 
 
-
-@app.route('/account/activate')
+@app.route('/account/activate/<code>')
 @templated()
-def activate():
-    # read activation code
-    # wipe activation (on POST)
-    # flash warning
-    # redirect to password change page
-    pass
+def activate(code):
+    # find the user to activate
+    user = User.query.filter_by(activation=code).first()
+    if not user:
+        abort(404)
+
+    # sign them in
+    login_user(user)
+
+    # tell them to change their password
+    flash("Please set your new password.")
+    return redirect(url_for('change_password'))
 
 
-@app.route('/site/new')
+@app.route('/site/new', methods=['GET', 'POST'])
 @login_required
 @templated()
 def new_site():

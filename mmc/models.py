@@ -11,6 +11,21 @@ from werkzeug import secure_filename
 from mmc import app, db, login_manager, mail
 
 
+ACTIVATION_EMAIL = """
+Welcome to mmcbox!
+
+Your account has been activated. Please sign in using this
+one-time link and set your password:
+
+    {0}
+
+Once you're signed in, you can begin to create your website.
+If you are having trouble with your account, feel free to
+reply to this message and we'll try to sort things out.
+
+Enjoy.
+"""
+
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.Unicode(128), unique=True)
@@ -30,6 +45,7 @@ class User(db.Model, UserMixin):
         user.activation = User.generate_random_string(16)
         db.session.add(user)
         db.session.commit()
+        return user
 
     def __str__(self):
         return self.email
@@ -38,6 +54,8 @@ class User(db.Model, UserMixin):
         return "<User '{0}'>".format(self.email)
 
     def authenticate(self, password):
+        if not self.password:
+            return False
         # first 8 characters are the salt
         salt = self.password[:8]
         # verify the password and salt
@@ -57,7 +75,9 @@ class User(db.Model, UserMixin):
         msg = Message("mmcbox account activation",
                       sender=app.config['DEFAULT_MAIL_SENDER'])
         msg.add_recipient(self.email)
-        msg.body = "your activation code is {0}".format(self.activation)
+        msg.body = ACTIVATION_EMAIL.format(url_for('activate',
+                                           code=self.activation,
+                                           _external=True))
         mail.send(msg)
 
 

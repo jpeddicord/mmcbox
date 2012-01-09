@@ -2,6 +2,7 @@
 {% from "_forms.html" import render_field %}
 
 {% block content %}
+<p>Pick a domain to use. Use something.mmcbox.com for free, or a custom domain if pre-arranged.</p>
 <form action="" method="post">
 	{{ form.csrf }}
 	{{ render_field(form.domain) }}
