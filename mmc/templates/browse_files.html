@@ -9,10 +9,19 @@
 <script type="text/javascript">
 	$(function() {
 		// tooltips
-		$('#upload').twipsy({placement: 'right'});
+		$('button').twipsy({placement: 'right'});
 
 		// button actions
 		$('#newfile').click(function(){
+			name = prompt("Filename?");
+			if (name) {
+				$.post('{{ url_for('new_file', domain=domain) }}',
+					{'path': '{{ path }}', 'filename': name},
+					function() {
+						window.location.reload();
+					}
+				);
+			}
 		});
 		$('#newfolder').click(function(){
 		});
@@ -36,12 +45,17 @@
 {% endblock %}
 
 {% block content %}
+<div class="alert-message warning"><p>
+	<strong>Heads up:</strong> I'm still working on a lot of stuff here. Some things just don't work at the moment. I'm working on this weekly, but for now, the following things are missing: renaming and deleting files, creating folders, moving files, downloading your site.
+</p></div>
+
+
 <div class="well">
 	<button id="newfile" class="btn info primary">New File</button>
-	<button id="newfolder" class="btn">New Folder</button>
-	<button id="upload" class="btn" title="You can also upload files by dragging them onto the page!">Upload
-	</button>
-	<input id="fileupload" type="file" name="files[]" multiple>
+	<button id="newfolder" class="btn" title="This doesn't work right now. Sorry.">New Folder</button>
+	<!--<button id="upload" class="btn" title="You can also upload files by dragging them onto the page!">Upload
+	</button>-->
+	<span style="margin-left: 10px;">Upload: <input id="fileupload" type="file" name="files[]" multiple></span>
 </div>
 
 

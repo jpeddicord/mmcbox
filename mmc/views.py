@@ -7,7 +7,7 @@ from flask import url_for
 from flask.ext.login import login_required, login_user, logout_user, current_user
 from werkzeug import secure_filename
 
-from mmc import app, db
+from mmc import app, db, magic
 from mmc.forms import SiteForm, ChangePasswordForm
 from mmc.models import User, Website
 from mmc.util import templated, check_domain, filesystem_path
@@ -109,7 +109,6 @@ def new_site():
 @check_domain
 @templated()
 def browse_files(domain, path=''):
-    w = Website.query.filter_by(domain=domain).first()
     d = filesystem_path(domain, path)
     for root, dirs, files in os.walk(d):
         return dict(domain=domain, path=path, dirs=dirs, files=files,
@@ -121,11 +120,39 @@ def browse_files(domain, path=''):
 @check_domain
 @templated()
 def edit_file(domain, path):
-    w = Website.query.filter_by(domain=domain).first()
     fname = filesystem_path(domain, path)
-    #TODO: check file size, text editable, etc
+
+    # calculate the folder this file is in
+    if '/' in path:
+        browse = url_for('browse_files', domain=domain, path=path.rsplit('/', 1)[0])
+    else:
+        browse = ''
+
+    # check file size
+    size = os.path.getsize(fname)
+    if size > 200 * 1024:
+        flash("Sorry, that file is a little too large to edit on the web.")
+        return redirect(browse) 
+
+    # check magic
+    mime = magic.from_file(fname)
+    if 'text' not in mime and size > 16:
+        flash("This doesn't appear to be a text file, so we can't edit it here.")
+        return redirect(browse)
+
     with open(fname) as f:
-        return dict(file_content=f.read())
+        return dict(file_content=f.read(), domain=domain, path=path)
+
+
+@app.route('/site/<domain>/save/<path:path>', methods=['POST'])
+@login_required
+@check_domain
+def save_file(domain, path):
+    fname = filesystem_path(domain, path)
+    data = request.form['content']
+    with open(fname, 'w') as f:
+        f.write(data)
+    return ''
 
 
 @app.route('/site/<domain>/upload', methods=['POST'])
@@ -141,6 +168,18 @@ def upload_file(domain):
         return '{}'
     else:
         return abort(400)
+
+
+@app.route('/site/<domain>/new-file', methods=['POST'])
+@login_required
+@check_domain
+def new_file(domain):
+    filename = secure_filename(request.form['filename'])
+    path = filesystem_path(domain, request.form['path'])
+    fullpath = os.path.join(path, filename)
+    with open(fullpath, 'w') as f:
+        f.write('\n')
+    return ''
 
 
 @app.route('/site/<domain>/delete', methods=['POST'])

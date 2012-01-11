@@ -10,18 +10,32 @@
 <script src="{{ url_for('static', filename='ace/mode-javascript.js') }}"></script>
 
 <script>
+var aceeditor;
+
 window.onload = function() {
-	var editor = ace.edit('editor');
-	editor.setTheme('ace/theme/clouds');
+	aceeditor = ace.edit('editor');
+	aceeditor.setTheme('ace/theme/clouds');
 	var mode = require('ace/mode/html').Mode;
-	editor.getSession().setMode(new mode());
+	aceeditor.getSession().setMode(new mode());
 }
+
+$(function(){
+	$('#save, #saveclose').click(function(){
+		$('#save, #saveclose').attr('disabled', 'disabled');
+		$.post('{{ url_for('save_file', domain=domain, path=path) }}',
+			{'content': aceeditor.getSession().getValue()},
+			function() {
+				$('#save, #saveclose').removeAttr('disabled')
+			}
+		);
+	});
+});
 </script>
 {% endblock %}
 
 {% block headercontent %}
 <button id="save" class="btn primary">Save</button>
-<button id="saveclose" class="btn">Save &amp; Close</button>
+<button id="saveclose" class="btn" style="visibility: hidden;">Save &amp; Close</button>
 {% endblock %}
 
 {% block content %}

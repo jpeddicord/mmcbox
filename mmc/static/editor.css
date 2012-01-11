@@ -1,8 +1,7 @@
 header {
 	margin: 0;
-	padding: 0;
+	padding: 4px;
 	border: none;
-	width: 100%;
 }
 
 #content {
@@ -13,7 +12,7 @@ header {
 	position: absolute;
 	left: 0;
 	right: 0;
-	top: 40px;
+	top: 36px;
 	bottom: 0;
 	margin: 0;
 	padding: 0;
