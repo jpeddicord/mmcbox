@@ -2,38 +2,56 @@
 
 {% block head %}
 {{ super() }}
+<script src="{{ url_for('static', filename='jquery.iframe-transport.js') }}"></script>
+<script src="{{ url_for('static', filename='jquery.fileupload.js') }}"></script>
 <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='browser.css') }}" />
 
 <script type="text/javascript">
 	$(function() {
-		$('#newfile').button({
-			icons: {
-				primary: 'ui-icon-document'
-			}
+		// tooltips
+		$('#upload').twipsy({placement: 'right'});
+
+		// button actions
+		$('#newfile').click(function(){
 		});
-		$('#newfolder').button({
-			icons: {
-				primary: 'ui-icon-folder-open'
-			}
+		$('#newfolder').click(function(){
 		});
-		$('#upload').button({
-			icons: {
-				primary: 'ui-icon-circle-arrow-n'
-			}
+		$('#upload').click(function(){
 		});
 
+		// upload magic
+		$('#fileupload').fileupload({
+			dataType: 'json',
+			url: '{{ url_for('upload_file', domain=domain) }}',
+			formData: {'path': '{{ path }}'},
+			done: function(e, data) {
+				window.location.reload();
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				alert("Upload failed. It may be too large, or not an acceptable type.");
+			}
+		});
 	});
 </script>
 {% endblock %}
 
 {% block content %}
-<div class="ui-widget-header">
-	<button id="newfile">New File</button>
-	<button id="newfolder">New Folder</button>
-	<button id="upload">Upload</button>
+<div class="well">
+	<button id="newfile" class="btn info primary">New File</button>
+	<button id="newfolder" class="btn">New Folder</button>
+	<button id="upload" class="btn" title="You can also upload files by dragging them onto the page!">Upload
+	</button>
+	<input id="fileupload" type="file" name="files[]" multiple>
 </div>
 
+
 <ul id="browser">
+	{% if path %}
+	<li class="folder">
+	<a href="../" class="ui-button-content">^ Up..</a>
+	</li>
+	{% endif %}
+
 	{% for d in dirs %}
 	<li class="folder">
 		<ul>

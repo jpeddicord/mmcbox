@@ -3,21 +3,22 @@
 	<head>
 		{% block head %}
 		<title>mmcbox</title>
-		<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
+		<link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
 		<link rel="stylesheet" media="screen" href="{{ url_for('static', filename='style.css') }}" />
 		<link rel="stylesheet" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/themes/ui-lightness/jquery-ui.css" />
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+		<script src="{{ url_for('static', filename='bootstrap-twipsy.js') }}"></script>
 		{% endblock %}
 	</head>
 
 	<body>
 		{% block body %}
 		{% block header %}
-		<header>
+		<header class="container">
 		<a href="{{ url_for('logout') }}">logout</a>
 		<a href="{{ url_for('change_password') }}">change password</a>
-		<h1>mmc<span>box</span></h1>
+		<h1><a href="{{ url_for('index') }}">mmc<span>box</span></a></h1>
 		{% block headercontent %}{% endblock %}
 		</header>
 		{% endblock %}
@@ -33,7 +34,7 @@
 		</div>
 		{% endfor %}
 
-		<section id="content">
+		<section class="container" id="content">
 		{% block content %}
 			No content.
 		{% endblock %}

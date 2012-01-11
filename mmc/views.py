@@ -2,9 +2,10 @@ import os
 import os.path
 
 from flask import g, request, session
-from flask import render_template, redirect, flash
+from flask import render_template, redirect, flash, abort
 from flask import url_for
 from flask.ext.login import login_required, login_user, logout_user, current_user
+from werkzeug import secure_filename
 
 from mmc import app, db
 from mmc.forms import SiteForm, ChangePasswordForm
@@ -131,7 +132,15 @@ def edit_file(domain, path):
 @login_required
 @check_domain
 def upload_file(domain):
-    pass
+    f = request.files['files[]']
+    if f and f.filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']:
+        filename = secure_filename(f.filename)
+        path = filesystem_path(domain, request.form['path'])
+        fullpath = os.path.join(path, filename)
+        f.save(fullpath)
+        return '{}'
+    else:
+        return abort(400)
 
 
 @app.route('/site/<domain>/delete', methods=['POST'])
