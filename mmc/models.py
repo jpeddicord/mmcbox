@@ -102,7 +102,7 @@ class Website(db.Model):
 
     def get_dir(self):
         path = join(app.config['SITES_DIR'], secure_filename(self.domain))
-        if not exists:
-            os.mkdir(path)
+        if not exists(path):
+            mkdir(path)
         return path
 
