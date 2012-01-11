@@ -109,6 +109,10 @@ def new_site():
 @check_domain
 @templated()
 def browse_files(domain, path=''):
+    # ensure the directory on the filesystem is created
+    w = Website.query.filter_by(domain=domain).first().get_dir()
+
+    # get the physical path
     d = filesystem_path(domain, path)
     for root, dirs, files in os.walk(d):
         return dict(domain=domain, path=path, dirs=dirs, files=files,
