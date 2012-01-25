@@ -181,8 +181,9 @@ def new_file(domain):
     filename = secure_filename(request.form['filename'])
     path = filesystem_path(domain, request.form['path'])
     fullpath = os.path.join(path, filename)
-    with open(fullpath, 'w') as f:
-        f.write('\n')
+    if not os.path.exists(fullpath):
+        with open(fullpath, 'w') as f:
+            f.write('\n')
     return ''
 
 

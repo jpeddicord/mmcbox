@@ -4,7 +4,7 @@
 {{ super() }}
 <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='editor.css') }}" />
 <script src="{{ url_for('static', filename='ace/ace.js') }}"></script>
-<script src="{{ url_for('static', filename='ace/theme-clouds.js') }}"></script>
+<script src="{{ url_for('static', filename='ace/theme-crimson_editor.js') }}"></script>
 <script src="{{ url_for('static', filename='ace/mode-html.js') }}"></script>
 <script src="{{ url_for('static', filename='ace/mode-css.js') }}"></script>
 <script src="{{ url_for('static', filename='ace/mode-javascript.js') }}"></script>
@@ -14,7 +14,7 @@ var aceeditor;
 
 window.onload = function() {
 	aceeditor = ace.edit('editor');
-	aceeditor.setTheme('ace/theme/clouds');
+	aceeditor.setTheme('ace/theme/crimson_editor');
 	var mode = require('ace/mode/html').Mode;
 	aceeditor.getSession().setMode(new mode());
 }
