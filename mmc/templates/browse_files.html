@@ -14,7 +14,7 @@
 		// button actions
 		$('#newfile').click(function(){
 			name = prompt("Filename?");
-			if (name) {
+			if (name != NULL) {
 				$.post('{{ url_for('new_file', domain=domain) }}',
 					{'path': '{{ path }}', 'filename': name},
 					function() {
