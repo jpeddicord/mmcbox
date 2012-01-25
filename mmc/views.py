@@ -187,6 +187,18 @@ def new_file(domain):
     return ''
 
 
+@app.route('/site/<domain>/new-folder', methods=['POST'])
+@login_required
+@check_domain
+def new_folder(domain):
+    filename = secure_filename(request.form['filename'])
+    path = filesystem_path(domain, request.form['path'])
+    fullpath = os.path.join(path, filename)
+    if not os.path.exists(fullpath):
+        os.mkdir(fullpath)
+    return ''
+
+
 @app.route('/site/<domain>/delete', methods=['POST'])
 @login_required
 @check_domain
