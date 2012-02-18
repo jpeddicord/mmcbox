@@ -30,13 +30,16 @@
 		source code for this site will be made available online soon.
 	</p>
 
+	{% block form %}
 	<form action="" method="post">
 		<input type="text" name="email" placeholder="email" />
 		<input type="password" name="password" placeholder="password" />
 		<input type="submit" value="Sign In" class="btn primary" />
 
-		<p>Forgot your password, or need an account? Contact jacob at peddicord dot net.</p>
+		<p><a href="{{ url_for('forgot_password') }}">Forgot your password?</a></p>
+		<p>Need an account? Contact accounts at mmcbox dot com.</p>
 	</form>
+	{% endblock %}
 
 </div>
 {% endblock %}

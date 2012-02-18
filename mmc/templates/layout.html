@@ -17,7 +17,8 @@
 		{% block header %}
 		<header class="container">
 		<a href="{{ url_for('logout') }}">logout</a>
-		<a href="{{ url_for('change_password') }}">change password</a>
+		<a href="{{ url_for('change_password') }}">{{ current_user.email }} (change password)</a>
+		<a href="//{{ domain }}">{{ domain }}</a>
 		<h1><a href="{{ url_for('index') }}">mmc<span>box</span></a></h1>
 		{% block headercontent %}{% endblock %}
 		</header>

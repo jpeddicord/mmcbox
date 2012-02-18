@@ -2,10 +2,11 @@
 {% from "_forms.html" import render_field %}
 
 {% block content %}
-<p>Pick a domain to use. Use something.mmcbox.com for free, or a custom domain if pre-arranged.</p>
+<p>Pick a domain to use. Make sure it ends in ".mmcbox.com". For example, you could use myname.mmcbox.com where "myname" is your name. This will be what people type in their address bar to get to your website.</p>
+<p>If you'd like to use a full domain name, please contact accounts@mmcbox.com.</p>
 <form action="" method="post">
 	{{ form.csrf }}
 	{{ render_field(form.domain) }}
-	<input type="submit" value="Create" />
+	<input type="submit" value="Create" class="btn primary" />
 </form>
 {% endblock %}

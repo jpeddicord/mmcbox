@@ -13,8 +13,8 @@
 
 		// button actions
 		$('#newfile').click(function(){
-			name = prompt("Filename?");
-			if (name != null) {
+			var name = prompt("What do you want to name the file?");
+			if (name != null && name != 'null' && name != '') {
 				$.post('{{ url_for('new_file', domain=domain) }}',
 					{'path': '{{ path }}', 'filename': name},
 					function() {
@@ -24,8 +24,8 @@
 			}
 		});
 		$('#newfolder').click(function(){
-			name = prompt("Folder name?");
-			if (name != null) {
+			var name = prompt("What do you want to name the folder?");
+			if (name != null && name != 'null' && name != '') {
 				$.post('{{ url_for('new_folder', domain=domain) }}',
 					{'path': '{{ path }}', 'filename': name},
 					function() {
@@ -91,7 +91,9 @@
 			<li class="delete">delete</li>
 			<li class="rename">rename</li>
 		</ul>-->
-		<a href="{{ url_for('edit_file', domain=domain, path=join(path, f)) }}">{{ f }}</a>
+		<strong>{{ f }}</strong>
+		<a href="//{{ domain }}/{{ join(path, f) }}">view</a>
+		<a href="{{ url_for('edit_file', domain=domain, path=join(path, f)) }}">edit</a>
 	</li>
 	{% endfor %}
 </ul>

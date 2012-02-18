@@ -26,6 +26,15 @@ reply to this message and we'll try to sort things out.
 Enjoy.
 """
 
+FORGOT_PASSWORD_EMAIL = """
+Forgot your password? Reset it here:
+
+    {0}
+
+If you need help, feel free to reply to this email and we'll
+try to sort things out.
+"""
+
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.Unicode(128), unique=True)
@@ -78,6 +87,17 @@ class User(db.Model, UserMixin):
         msg.body = ACTIVATION_EMAIL.format(url_for('activate',
                                            code=self.activation,
                                            _external=True))
+        mail.send(msg)
+
+    def mail_forgot_password(self):
+        """Send a password reset email."""
+
+        msg = Message("mmcbox password reset",
+                      sender=app.config['DEFAULT_MAIL_SENDER'])
+        msg.add_recipient(self.email)
+        msg.body = FORGOT_PASSWORD_EMAIL.format(url_for('activate',
+                                                code=self.activation,
+                                                _external=True))
         mail.send(msg)
 
 

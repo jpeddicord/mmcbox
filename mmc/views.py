@@ -63,6 +63,27 @@ def change_password():
 
     return dict(form=form)
 
+@app.route('/account/forgotpass', methods=['GET', 'POST'])
+@templated()
+def forgot_password():
+    if request.method == 'POST':
+        user = User.query.filter_by(email=request.form['email']).first()
+        # not found
+        if not user:
+            flash("Account not found. Contact accounts@mmcbox.com for help.")
+            return redirect(url_for('forgot_password'))
+        # generate a new activation
+        user.activation = User.generate_random_string(16)
+        user.password = None
+        # save and email
+        db.session.add(user)
+        db.session.commit()
+        user.mail_forgot_password()
+        # notify and redirect
+        flash("Please check your email for further instructions.")
+        return redirect(url_for('login'))
+    return None
+
 
 @app.route('/account/activate/<code>')
 @templated()
@@ -95,7 +116,7 @@ def new_site():
         # add a website
         w = Website()
         w.user = current_user
-        w.domain = form.domain.data
+        w.domain = form.domain.data.lower()
         db.session.add(w)
         db.session.commit()
         return redirect(w.url())
@@ -136,12 +157,12 @@ def edit_file(domain, path):
     size = os.path.getsize(fname)
     if size > 200 * 1024:
         flash("Sorry, that file is a little too large to edit on the web.")
-        return redirect(browse) 
+        return redirect(browse)
 
     # check magic
     mime = magic.from_file(fname)
     if 'text' not in mime and size > 16:
-        flash("This doesn't appear to be a text file, so we can't edit it here.")
+        flash("This doesn't appear to be a text file, so we can't edit it here. If you want to replace it, just upload it again.")
         return redirect(browse)
 
     with open(fname) as f:

@@ -24,7 +24,7 @@ h1 span {
 
 header > a:link, header > a:visited {
 	float: right;
-	margin: 0 0 0 8px;
+	margin: 0 0 0 20px;
 	text-decoration: none;
 	color: #444;
 	font-weight: bold;
