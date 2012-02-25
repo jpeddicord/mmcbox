@@ -92,8 +92,8 @@
 			<li class="rename">rename</li>
 		</ul>-->
 		<strong>{{ f }}</strong>
-		<a href="//{{ domain }}/{{ join(path, f) }}">view</a>
-		<a href="{{ url_for('edit_file', domain=domain, path=join(path, f)) }}">edit</a>
+		<a href="//{{ domain }}/{{ join(path, f) }}" target="_blank">view</a>
+		<a href="{{ url_for('edit_file', domain=domain, path=join(path, f)) }}" target="_blank">edit</a>
 	</li>
 	{% endfor %}
 </ul>

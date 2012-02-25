@@ -29,13 +29,18 @@ $(function(){
 			}
 		);
 	});
+
+	$('#viewonline').click(function(){
+		window.open('//{{ domain }}/{{ path }}');
+	});
 });
 </script>
 {% endblock %}
 
 {% block headercontent %}
 <button id="save" class="btn primary">Save</button>
-<button id="saveclose" class="btn" style="visibility: hidden;">Save &amp; Close</button>
+<button id="viewonline" class="btn">View Online</a>
+<button id="saveclose" class="btn" style="display: none;">Save &amp; Close</button>
 {% endblock %}
 
 {% block content %}
