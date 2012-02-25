@@ -16,7 +16,7 @@ if not app.debug:
     # email handler
     if app.config.get('ADMINS', None):
         from logging.handlers import SMTPHandler
-        mail_handler = SMTPHandler('127.0.0.1', 'error@mmcbox.com', ADMINS, 'mmcbox error')
+        mail_handler = SMTPHandler('127.0.0.1', 'error@mmcbox.com', app.config['ADMINS'], 'mmcbox error')
         mail_handler.setLevel(ERROR)
         mail_handler.setFormatter(Formatter('''
         Message type:       %(levelname)s
