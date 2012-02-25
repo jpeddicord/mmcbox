@@ -5,7 +5,7 @@ from mmc import views
 
 # logging setup
 if not app.debug:
-    from logging import Formatter, StreamHandler, WARNING, DEBUG
+    from logging import Formatter, StreamHandler, ERROR, WARNING, DEBUG
     app.logger.setLevel(WARNING)
 
     # stdout handler
