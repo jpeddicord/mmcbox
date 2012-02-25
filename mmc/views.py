@@ -13,6 +13,11 @@ from mmc.models import User, Website
 from mmc.util import templated, check_domain, filesystem_path
 
 
+@app.route('/error_test')
+def error_test():
+    1/0
+
+
 @app.route('/')
 @login_required
 def index():
