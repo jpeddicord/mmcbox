@@ -171,7 +171,7 @@ def edit_file(domain, path):
         return redirect(browse)
 
     with open(fname) as f:
-        return dict(file_content=f.read(), domain=domain, path=path)
+        return dict(file_content=f.read().decode('utf-8'), domain=domain, path=path)
 
 
 @app.route('/site/<domain>/save/<path:path>', methods=['POST'])
