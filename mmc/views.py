@@ -181,7 +181,7 @@ def save_file(domain, path):
     fname = filesystem_path(domain, path)
     data = request.form['content']
     with open(fname, 'w') as f:
-        f.write(data)
+        f.write(data.encode('utf-8'))
     return ''
 
 
