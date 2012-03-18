@@ -1,8 +1,8 @@
 import os
 import os.path
 
-from flask import g, request, session
-from flask import render_template, redirect, flash, abort
+from flask import request
+from flask import redirect, flash, abort
 from flask import url_for
 from flask.ext.login import login_required, login_user, logout_user, current_user
 from werkzeug import secure_filename
@@ -11,11 +11,6 @@ from mmc import app, db, magic
 from mmc.forms import SiteForm, ChangePasswordForm
 from mmc.models import User, Website
 from mmc.util import templated, check_domain, filesystem_path
-
-
-@app.route('/error_test')
-def error_test():
-    1/0
 
 
 @app.route('/')
@@ -136,7 +131,7 @@ def new_site():
 @templated()
 def browse_files(domain, path=''):
     # ensure the directory on the filesystem is created
-    w = Website.query.filter_by(domain=domain).first().get_dir()
+    Website.query.filter_by(domain=domain).first().get_dir()
 
     # get the physical path
     d = filesystem_path(domain, path)
