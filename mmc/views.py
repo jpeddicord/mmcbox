@@ -176,9 +176,17 @@ def edit_file(domain, path):
 @check_domain
 def save_file(domain, path):
     fname = filesystem_path(domain, path)
+
+    # first, write to a secondary file
+    secondary = fname + '~'
     data = request.form['content']
-    with open(fname, 'w') as f:
+    with open(secondary, 'w') as f:
         f.write(data.encode('utf-8'))
+
+    # then, remove the original and rename the new file
+    if os.path.exists(fname):
+        os.remove(fname)
+    os.rename(secondary, fname)
     return ''
 
 
