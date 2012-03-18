@@ -1,6 +1,7 @@
 *.py[co]
 *.swp
 *.db
+*~
 env/
 instance/
 sites/
