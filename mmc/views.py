@@ -155,14 +155,16 @@ def edit_file(domain, path):
 
     # check file size
     size = os.path.getsize(fname)
-    if size > 200 * 1024:
-        flash("Sorry, that file is a little too large to edit on the web.")
-        return redirect(browse)
 
     # check magic
     mime = magic.from_file(fname)
     if 'text' not in mime and size > 16:
         flash("This doesn't appear to be a text file, so we can't edit it here. If you want to replace it, just upload it again.")
+        return redirect(browse)
+
+    # warn about size issues after magic check
+    if size > 200 * 1024:
+        flash("Sorry, that file is a little too large to edit on the web.")
         return redirect(browse)
 
     with open(fname) as f:
