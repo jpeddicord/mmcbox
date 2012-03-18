@@ -7,7 +7,6 @@ if len(sys.argv) != 2:
     sys.exit(1)
 
 from mmc import app
-from mmc import views
 from mmc.models import User
 
 

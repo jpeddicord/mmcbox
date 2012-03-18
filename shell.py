@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 
 import os
-import readline
-from pprint import pprint
 
 from flask import *
 
@@ -10,4 +8,14 @@ from mmc import *
 from mmc.models import *
 
 
-os.environ['PYTHONINSPECT'] = 'True'
+try:
+    from IPython import embed
+    embed()
+
+except ImportError:
+    print "IPython is recommended for shell usage, but you don't have it installed."
+    print "Falling back to built-in Python."
+
+    import readline
+    from pprint import pprint
+    os.environ['PYTHONINSPECT'] = 'True'
