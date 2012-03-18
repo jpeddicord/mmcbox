@@ -63,6 +63,9 @@
 	border-radius: 0;
 	-webkit-border-radius: 0;
 	-moz-border-radius: 0;
+	box-shadow: none;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
 }
 
 #login input[type="submit"] {
