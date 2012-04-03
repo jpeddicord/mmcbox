@@ -49,15 +49,36 @@
 				alert("Upload failed. It may be too large, or not an acceptable type.");
 			}
 		});
+
+		// rename and delete
+		$('.rename a').click(function(){
+			var original = $(this).attr('data-path');
+			var rename = prompt("New name:");
+			if (rename != null && rename != 'null' && rename != '') {
+				$.post('{{ url_for('rename_file', domain=domain) }}',
+				{'path': '{{ path }}', 'original': original, 'rename': rename},
+					function() {
+						window.location.reload();
+					}
+				);
+			}
+		});
+		$('.delete a').click(function(){
+			var file = $(this).attr('data-path');
+			if (confirm("Trash this file?")) {
+				$.post('{{ url_for('delete_file', domain=domain) }}',
+				{'file': file },
+					function() {
+						window.location.reload();
+					}
+				);
+			}
+		});
 	});
 </script>
 {% endblock %}
 
 {% block content %}
-<div class="alert-message warning"><p>
-	<strong>Heads up:</strong> I'm still working on a lot of stuff here. Some things just don't work at the moment. I'm working on this weekly, but for now, the following things are missing: renaming and deleting files, moving files, and downloading your site.
-</p></div>
-
 
 <div class="well">
 	<button id="newfile" class="btn info primary">New File</button>
@@ -66,7 +87,6 @@
 	</button>-->
 	<span style="margin-left: 10px;">Upload: <input id="fileupload" type="file" name="files[]" multiple></span>
 </div>
-
 
 <ul id="browser">
 	{% if path %}
@@ -87,10 +107,10 @@
 
 	{% for f in files %}
 	<li class="file">
-		<!--<ul>
-			<li class="delete">delete</li>
-			<li class="rename">rename</li>
-		</ul>-->
+		<ul>
+			<li class="delete"><a data-path="{{ join(path, f) }}" href="#">delete</a></li>
+			<li class="rename"><a data-path="{{ join(path, f) }}" href="#">rename</a></li>
+		</ul>
 		<strong>{{ f }}</strong>
 		<a href="//{{ domain }}/{{ join(path, f) }}" target="_blank">view</a>
 		<a href="{{ url_for('edit_file', domain=domain, path=join(path, f)) }}" target="_blank">edit</a>

@@ -35,19 +35,6 @@ header > a:link, header > a:visited {
 	border: 1px solid #ccc;
 }
 
-.message .ui-widget {
-	margin: 10px;
-}
-
-.message .ui-state-highlight {
-	padding: 5px;
-}
-
-.message .ui-icon {
-	float: left;
-	margin-right: 5px;
-}
-
 body > .message {
 	width: 840px;
 	margin: 5px auto;

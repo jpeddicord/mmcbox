@@ -24,13 +24,10 @@
 		</header>
 		{% endblock %}
 
-		{% for msg in get_flashed_messages() %}
+		{% for category, msg in get_flashed_messages(with_categories=True) %}
 		<div class="message">
-			<div class="ui-widget">
-				<p class="ui-state-highlight ui-corner-all">
-					<span class="ui-icon ui-icon-info"></span>
-					{{ msg }}
-				</p>
+			<div class="alert-message {% if category == 'message' %}info{% else %}{{ category }}{% endif %}">
+				<p>{{ msg }}</p>
 			</div>
 		</div>
 		{% endfor %}

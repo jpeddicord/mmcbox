@@ -19,6 +19,7 @@ DEFAULT_MAIL_SENDER = ''
 # allowed upload types and sizes
 ALLOWED_EXTENSIONS = ['html', 'htm', 'txt', 'js', 'css', 'jpg', 'jpeg', 'png', 'gif']
 MAX_CONTENT_LENGTH = 2 * 1024 * 1024
+MAX_EDITABLE = 200 * 1024
 
 # email addresses errors are sent to
 ADMINS = []

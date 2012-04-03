@@ -36,7 +36,10 @@ def check_domain(f):
         if domain:
             w = Website.query.filter_by(domain=domain).first()
             if w and w.user.id == current_user.id:
-                return f(*args, **kwargs)
+                try:
+                    return f(*args, **kwargs)
+                except SecurityError:
+                    return abort(403)
         return abort(404)
     return decorated_function
 

@@ -114,6 +114,12 @@ class Website(db.Model):
     storage_limit = db.Column(db.Integer)
     file_limit = db.Column(db.Integer)
 
+    def __str__(self):
+        return self.domain
+
+    def __repr__(self):
+        return "<Website '{0}'>".format(self.domain)
+
     def calculate_size(self):
         return 0
 

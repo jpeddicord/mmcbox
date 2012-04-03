@@ -15,19 +15,9 @@
 	font-size: 1.2em;
 }
 
-#login .ui-widget {
+#login .message {
 	float: right;
 	margin: 10px 10px 20px 0;
-	font-size: 1.4em;
-}
-
-#login .ui-state-highlight {
-	padding: 5px;
-}
-
-#login .ui-icon {
-	float: left;
-	margin-right: 5px;
 }
 
 #login #info {
