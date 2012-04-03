@@ -5,7 +5,7 @@
 <p>Pick a domain to use. Make sure it ends in ".mmcbox.com". For example, you could use myname.mmcbox.com where "myname" is your name. This will be what people type in their address bar to get to your website.</p>
 <p>If you'd like to use a full domain name, please contact accounts@mmcbox.com.</p>
 <form action="" method="post">
-	{{ form.csrf }}
+	{{ form.hidden_tag() }}
 	{{ render_field(form.domain) }}
 	<input type="submit" value="Create" class="btn primary" />
 </form>
