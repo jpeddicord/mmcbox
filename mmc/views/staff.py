@@ -31,7 +31,7 @@ def staff_create_account():
             except Exception as e:
                 flash("Failed to send activation email for an unknown reason.", 'error')
             else:
-                flash("Activation email sent.")
+                flash("Activation email sent.", 'success')
         flash("User created.", 'success')
         return redirect(url_for('staff_users'))
 
