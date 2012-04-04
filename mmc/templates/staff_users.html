@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h3>Active Accounts</h3>
+
+<a href="{{ url_for('staff_create_account') }}" class="btn">New Account</a>
+
+<blockquote>
+	<dl>
+		{% for user in users %}
+		<dt>{{ user.email }}</dt>
+		<dd>
+		<ul class="unstyled">
+			{% for ws in user.websites %}
+			<li><a href="{{ url_for('browse_files', domain=ws.domain) }}">{{ ws.domain }}</a></li>
+			{% endfor %}
+		</ul>
+		</dd>
+		{% endfor %}
+	</dl>
+</blockquote>
+{% endblock %}

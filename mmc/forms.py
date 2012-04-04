@@ -1,6 +1,8 @@
-from flask.ext.wtf import Form, Required, EqualTo, Length, Regexp, TextField, PasswordField, ValidationError
+from flask.ext.wtf import Form
+from flask.ext.wtf import Required, EqualTo, Length, Regexp, ValidationError
+from flask.ext.wtf import TextField, PasswordField, BooleanField
 
-from mmc.models import Website
+from mmc.models import User, Website
 
 
 class SiteForm(Form):
@@ -12,6 +14,14 @@ class SiteForm(Form):
 
 
 class ChangePasswordForm(Form):
-    password = PasswordField("New Password", [Required(), Length(min=6), EqualTo('confirm')])
-    confirm = PasswordField("Confirm")
+    password = PasswordField("New Password", [Required(), Length(min=6)])
+    confirm = PasswordField("Confirm", [EqualTo('password')])
 
+
+class StaffCreateAccountForm(Form):
+    email = TextField("Email", [Required()])
+    notify = BooleanField("Send activation email")
+
+    def validate_email(self, field):
+        if User.query.filter_by(email=field.data).first():
+            raise ValidationError("Account already exists.")

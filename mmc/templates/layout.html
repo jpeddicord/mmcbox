@@ -3,12 +3,11 @@
 	<head>
 		{% block head %}
 		<title>mmcbox</title>
-		<link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
-		<link rel="stylesheet" media="screen" href="{{ url_for('static', filename='style.css') }}" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+		<link rel="stylesheet" media="screen" href="{{ url_for('static', filename='css/style.css') }}" />
 		<link rel="stylesheet" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/themes/ui-lightness/jquery-ui.css" />
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-		<script src="{{ url_for('static', filename='bootstrap-twipsy.js') }}"></script>
 		{% endblock %}
 	</head>
 
@@ -19,17 +18,17 @@
 		<a href="{{ url_for('logout') }}">logout</a>
 		<a href="{{ url_for('change_password') }}">{{ current_user.email }} (change password)</a>
 		<a href="//{{ domain }}">{{ domain }}</a>
+		{% if current_user.staff %}
 		<a href="{{ url_for('staff_users') }}">staff panel</a>
+		{% endif %}
 		<h1><a href="{{ url_for('index') }}">mmc<span>box</span></a></h1>
 		{% block headercontent %}{% endblock %}
 		</header>
 		{% endblock %}
 
 		{% for category, msg in get_flashed_messages(with_categories=True) %}
-		<div class="message">
-			<div class="alert-message {% if category == 'message' %}info{% else %}{{ category }}{% endif %}">
-				<p>{{ msg }}</p>
-			</div>
+		<div class="alert {% if category != 'message' %}alert-{{ category }}{% endif %}">
+			{{ msg }}
 		</div>
 		{% endfor %}
 

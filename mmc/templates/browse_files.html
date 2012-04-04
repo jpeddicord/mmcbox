@@ -2,15 +2,12 @@
 
 {% block head %}
 {{ super() }}
-<script src="{{ url_for('static', filename='jquery.iframe-transport.js') }}"></script>
-<script src="{{ url_for('static', filename='jquery.fileupload.js') }}"></script>
-<link rel="stylesheet" media="screen" href="{{ url_for('static', filename='browser.css') }}" />
+<script src="{{ url_for('static', filename='js/jquery.iframe-transport.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.fileupload.js') }}"></script>
+<link rel="stylesheet" media="screen" href="{{ url_for('static', filename='css/browser.css') }}" />
 
 <script type="text/javascript">
 	$(function() {
-		// tooltips
-		$('button').twipsy({placement: 'right'});
-
 		// button actions
 		$('#newfile').click(function(){
 			var name = prompt("What do you want to name the file?");
@@ -34,8 +31,6 @@
 				);
 			}
 		});
-		$('#upload').click(function(){
-		});
 
 		// upload magic
 		$('#fileupload').fileupload({
@@ -51,7 +46,7 @@
 		});
 
 		// rename and delete
-		$('.rename a').click(function(){
+		$('a.rename').click(function(){
 			var original = $(this).attr('data-path');
 			var rename = prompt("New name:");
 			if (rename != null && rename != 'null' && rename != '') {
@@ -63,7 +58,7 @@
 				);
 			}
 		});
-		$('.delete a').click(function(){
+		$('a.delete').click(function(){
 			var file = $(this).attr('data-path');
 			if (confirm("Trash this file?")) {
 				$.post('{{ url_for('delete_file', domain=domain) }}',
@@ -81,41 +76,46 @@
 {% block content %}
 
 <div class="well">
-	<button id="newfile" class="btn info primary">New File</button>
-	<button id="newfolder" class="btn">New Folder</button>
-	<!--<button id="upload" class="btn" title="You can also upload files by dragging them onto the page!">Upload
-	</button>-->
+	<span class="btn-group">
+		<button id="newfile" class="btn btn-primary">New File</button>
+		<button id="newfolder" class="btn">New Folder</button>
+	</span>
+	</button>
 	<span style="margin-left: 10px;">Upload: <input id="fileupload" type="file" name="files[]" multiple></span>
 </div>
 
-<ul id="browser">
+<table class="table table-striped">
 	{% if path %}
-	<li class="folder">
-		<a href="../" class="ui-button-content"><em>^ Up..</em></a>
-	</li>
+	<tr>
+		<td colspan="3"><a href="../" class="btn"><i class="icon-arrow-up"></i> Up..</a></td>
+	</tr>
 	{% endif %}
 
 	{% for d in dirs %}
-	<li class="folder">
-		<!--<ul>
-			<li class="delete">delete</li>
-			<li class="rename">rename</li>
-		</ul>-->
-		<a href="{{ d }}/" class="ui-button-content">{{ d }}/</a>
-	</li>
+	<tr>
+		{% if d == ".trash" %}
+		<td colspan="3"><i class="icon-trash"></i> <a href="{{ d }}/"><strong>Trash</strong></a></td>
+		{% else %}
+		<td colspan="3"><i class="icon-folder-open"></i> <a href="{{ d }}/"><strong>{{ d }}</strong></a></td>
+		{% endif %}
+	</tr>
 	{% endfor %}
 
 	{% for f in files %}
-	<li class="file">
-		<ul>
-			<li class="delete"><a data-path="{{ join(path, f) }}" href="#">delete</a></li>
-			<li class="rename"><a data-path="{{ join(path, f) }}" href="#">rename</a></li>
-		</ul>
-		<strong>{{ f }}</strong>
-		<a href="//{{ domain }}/{{ join(path, f) }}" target="_blank">view</a>
-		<a href="{{ url_for('edit_file', domain=domain, path=join(path, f)) }}" target="_blank">edit</a>
-	</li>
+	<tr>
+		<td>{{ f }}</td>
+		<td>
+			<a href="//{{ domain }}/{{ join(path, f) }}" target="_blank" class="btn btn-mini">view</a>
+			<a href="{{ url_for('edit_file', domain=domain, path=join(path, f)) }}" target="_blank" class="btn btn-mini btn-primary">edit</a>
+		</td>
+		<td>
+			<span class="btn-group">
+				<a data-path="{{ join(path, f) }}" href="#" class="delete btn btn-mini btn-danger">delete</a>
+				<a data-path="{{ join(path, f) }}" href="#" class="rename btn btn-mini btn-info">rename</a>
+			</span>
+		</td>
+	</tr>
 	{% endfor %}
-</ul>
+</table>
 
 {% endblock %}

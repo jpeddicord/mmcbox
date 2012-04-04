@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+{% from "_forms.html" import render_field %}
+
+{% block content %}
+
+<form action="" method="post">
+	{{ form.hidden_tag() }}
+	{{ render_field(form.email) }}
+	{{ render_field(form.notify) }}
+	<br/>
+	<input type="submit" value="Create" class="btn btn-primary" />
+</form>
+
+{% endblock %}

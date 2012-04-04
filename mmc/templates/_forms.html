@@ -1,9 +1,9 @@
 {% macro render_field(field) %}
 {% if field.errors %}
 
-	<div class="clearfix error">
+	<div class="control-group error">
 	{{ field.label }}
-	<div class="input">
+	<div class="controls">
 	{{ field(class_="error", **kwargs)|safe }}
 	<span class="help-inline">
 	{% for error in field.errors %}

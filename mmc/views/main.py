@@ -42,7 +42,7 @@ def login():
             return redirect(request.args.get('next') or url_for('index'))
         else:
             if 'buckeyemail' in request.form['email']:
-                flash("Try your @osu.edu email without buckeyemail.", 'warning')
+                flash("Try your @osu.edu email without buckeyemail.")
             else:
                 flash("Invalid email or password.", 'error')
     return dict(email=request.form.get('email', ''))
@@ -84,7 +84,7 @@ def forgot_password():
         # not found
         if not user:
             if 'buckeyemail' in request.form['email']:
-                flash("Try your @osu.edu email without buckeyemail.", 'warning')
+                flash("Try your @osu.edu email without buckeyemail.")
             else:
                 flash("Account not found. Contact accounts@mmcbox.com for help.", 'error')
             return redirect(url_for('forgot_password'))
@@ -96,7 +96,7 @@ def forgot_password():
         db.session.commit()
         user.mail_forgot_password()
         # notify and redirect
-        flash("Please check your email for further instructions.")
+        flash("Please check your email for further instructions.", 'info')
         return redirect(url_for('login'))
     return None
 
@@ -115,7 +115,7 @@ def activate(code):
     login_user(user)
 
     # tell them to change their password
-    flash("Please set your new password.")
+    flash("Please set your new password.", 'info')
     return redirect(url_for('change_password'))
 
 
@@ -127,7 +127,7 @@ def new_site():
 
     # check for an existing site and deny
     if Website.query.filter_by(user=current_user).first():
-        flash("Sorry, at the moment you may only have one website. Stay tuned.", 'warning')
+        flash("Sorry, at the moment you may only have one website. Stay tuned.")
         return redirect(url_for('index'))
 
     # create and check a form
@@ -283,6 +283,7 @@ def delete_file(domain):
             os.path.join(".trash", os.path.basename(filename)))
     os.renames(filename, trash)
 
+    flash("File moved to trash.", 'success')
     return ''
 
 
@@ -299,6 +300,7 @@ def rename_file(domain):
         flash("Did not rename: the file you're renaming to already exists.", 'error')
         return 'exists'
     os.renames(original, rename)
+
     flash("File renamed.", 'success')
     return ''
 

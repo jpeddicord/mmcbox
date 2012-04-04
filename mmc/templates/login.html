@@ -2,17 +2,15 @@
 
 {% block head %}
 {{ super() }}
-<link rel="stylesheet" media="screen" href="{{ url_for('static', filename='login.css') }}" />
+<link rel="stylesheet" media="screen" href="{{ url_for('static', filename='css/login.css') }}" />
 {% endblock %}
 
 {% block body %}
 <div id="login">
 	<h1>mmc<span>box</span></h1>
 	{% for msg in get_flashed_messages() %}
-	<div class="message">
-		<p class="alert-message warning">
-			{{ msg }}
-		</p>
+	<div class="alert">
+		{{ msg }}
 	</div>
 	{% endfor %}
 
@@ -33,7 +31,7 @@
 	<form action="" method="post">
 		<input type="text" name="email" placeholder="email" value="{{ email }}" />
 		<input type="password" name="password" placeholder="password" />
-		<input type="submit" value="Sign In" class="btn primary" />
+		<input type="submit" value="Sign In" class="btn btn-primary" />
 
 		<p><a href="{{ url_for('forgot_password') }}">Forgot your password?</a></p>
 		<p>Need an account? Contact accounts at mmcbox dot com.</p>

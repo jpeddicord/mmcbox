@@ -1,0 +1,11 @@
+tr .btn-group {
+	visibility: hidden;
+	list-style-type: none;
+	display: inline;
+	padding: 0;
+	float: right;
+}
+
+tr:hover .btn-group {
+	visibility: visible;
+}

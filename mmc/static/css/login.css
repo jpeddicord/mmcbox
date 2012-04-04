@@ -15,7 +15,7 @@
 	font-size: 1.2em;
 }
 
-#login .message {
+#login .alert {
 	float: right;
 	margin: 10px 10px 20px 0;
 }
