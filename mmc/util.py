@@ -2,7 +2,7 @@ import os.path
 from functools import wraps
 
 from flask import request, render_template, abort
-from flask.ext.login import current_user
+from flask.ext.login import login_required, current_user
 
 from mmc import app
 from mmc.models import Website
@@ -35,13 +35,22 @@ def check_domain(f):
         domain = request.view_args.get('domain')
         if domain:
             w = Website.query.filter_by(domain=domain).first()
-            if w and w.user.id == current_user.id:
+            if (w and w.user.id == current_user.id) or current_user.staff:
                 try:
                     return f(*args, **kwargs)
                 except SecurityError:
                     return abort(403)
         return abort(404)
     return decorated_function
+
+
+def staff_only(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not current_user.staff:
+            return abort(403)
+        return f(*args, **kwargs)
+    return login_required(decorated_function)
 
 
 def filesystem_path(domain, path):
