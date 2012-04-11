@@ -5,7 +5,7 @@
 <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='css/editor.css') }}" />
 
 {% if visual %}
-
+<script src="{{ url_for('static', filename='js/ckeditor/ckeditor.js') }}"></script>
 {% else %}
 <script src="{{ url_for('static', filename='js/ace/ace.js') }}"></script>
 <script src="{{ url_for('static', filename='js/ace/theme-tomorrow.js') }}"></script>
@@ -16,9 +16,24 @@
 
 <script>
 {% if visual %}
+var ckeditor;
 
+window.onload = function() {
+	ckeditor = CKEDITOR.replace('editor', {
+		fullPage: true,
+		htmlEncodeOutput: false,
+		on: {
+			instanceReady: function() {
+				this.dataProcessor.writer.setRules('p', {
+					breakAfterOpen: false
+				});
+			}
+		}
+	});
+}
 {% else %}
 var aceeditor;
+var mode_switch = false;
 
 window.onload = function() {
 	aceeditor = ace.edit('editor');
@@ -40,34 +55,45 @@ $(function(){
 					setTimeout(function() {
 						$('#save').text("Save");
 					}, 2500);
+					if (mode_switch) {
+						window.location.href = "{{ url_for('.edit_file', domain=domain, path=path, visual=(0 if visual else 1)) }}";
+					}
 				}, 500);
 			}
 		);
 	});
 
-	$('#viewonline').click(function(){
-		window.open('//{{ domain }}/{{ path }}');
+	$('#mode').click(function(){
+		mode_switch = true;
+		$('#save').click();
 	});
 });
 
 function get_editor_data() {
-	{% if visual %}
-	return TODO;
-	{% else %}
+{% if visual %}
+	return ckeditor.getData();
+{% else %}
 	return aceeditor.getSession().getValue();
-	{% endif %}
+{% endif %}
 }
 </script>
 {% endblock %}
 
 {% block headercontent %}
 <button id="save" class="btn btn-primary">Save</button>
-<button id="viewonline" class="btn">View Online</a>
+<a class="btn" href="//{{ domain }}/{{ path }}">View Online</a>
+<button id="mode" class="btn">
+{%- if visual %}
+Switch to HTML
+{% else %}
+Switch to Visual
+{% endif -%}
+</button>
 {% endblock %}
 
 {% block content %}
 {% if visual %}
-
+<textarea id="editor">{{ file_content }}</pre>
 {% else %}
 <pre id="editor">{{ file_content }}</pre>
 {% endif %}
