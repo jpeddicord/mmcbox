@@ -3,9 +3,14 @@ html {
 }
 
 header {
+	width: auto !important;
 	margin: 0;
 	padding: 4px;
 	border: none;
+}
+
+.container {
+	width: auto !important;
 }
 
 #content {

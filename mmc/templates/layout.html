@@ -21,8 +21,10 @@
 		{% if current_user.staff %}
 		<a href="{{ url_for('staff_users') }}">staff panel</a>
 		{% endif %}
-		<h1><a href="{{ url_for('index') }}">mmc<span>box</span></a></h1>
-		{% block headercontent %}{% endblock %}
+		<span style="white-space: nowrap">
+			<h1><a href="{{ url_for('index') }}">mmc<span>box</span></a></h1>
+			{% block headercontent %}{% endblock %}
+		</span>
 		</header>
 		{% endblock %}
 

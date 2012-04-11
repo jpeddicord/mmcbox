@@ -3,13 +3,21 @@
 {% block head %}
 {{ super() }}
 <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='css/editor.css') }}" />
+
+{% if visual %}
+
+{% else %}
 <script src="{{ url_for('static', filename='js/ace/ace.js') }}"></script>
 <script src="{{ url_for('static', filename='js/ace/theme-tomorrow.js') }}"></script>
 <script src="{{ url_for('static', filename='js/ace/mode-html.js') }}"></script>
 <script src="{{ url_for('static', filename='js/ace/mode-css.js') }}"></script>
 <script src="{{ url_for('static', filename='js/ace/mode-javascript.js') }}"></script>
+{% endif %}
 
 <script>
+{% if visual %}
+
+{% else %}
 var aceeditor;
 
 window.onload = function() {
@@ -19,12 +27,13 @@ window.onload = function() {
 	aceeditor.getSession().setMode(new mode());
 	aceeditor.setBehavioursEnabled(false);
 }
+{% endif %}
 
 $(function(){
 	$('#save').click(function(){
 		$('#save').text("Saving...").attr('disabled', 'disabled');
 		$.post('{{ url_for('save_file', domain=domain, path=path) }}',
-			{'content': aceeditor.getSession().getValue()},
+			{'content': get_editor_data()},
 			function() {
 				setTimeout(function() {
 					$('#save').text("Saved!").removeAttr('disabled');
@@ -40,6 +49,14 @@ $(function(){
 		window.open('//{{ domain }}/{{ path }}');
 	});
 });
+
+function get_editor_data() {
+	{% if visual %}
+	return TODO;
+	{% else %}
+	return aceeditor.getSession().getValue();
+	{% endif %}
+}
 </script>
 {% endblock %}
 
@@ -49,5 +66,9 @@ $(function(){
 {% endblock %}
 
 {% block content %}
+{% if visual %}
+
+{% else %}
 <pre id="editor">{{ file_content }}</pre>
+{% endif %}
 {% endblock %}
