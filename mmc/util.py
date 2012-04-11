@@ -35,7 +35,7 @@ def check_domain(f):
         domain = request.view_args.get('domain')
         if domain:
             w = Website.query.filter_by(domain=domain).first()
-            if (w and w.user.id == current_user.id) or current_user.staff:
+            if w and (w.user.id == current_user.id or current_user.staff):
                 try:
                     return f(*args, **kwargs)
                 except SecurityError:
