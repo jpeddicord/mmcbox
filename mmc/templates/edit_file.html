@@ -6,6 +6,7 @@
 
 {% if visual %}
 <script src="{{ url_for('static', filename='js/ckeditor/ckeditor.js') }}"></script>
+<style>html { overflow: auto !important; }</style>
 {% else %}
 <script src="{{ url_for('static', filename='js/ace/ace.js') }}"></script>
 <script src="{{ url_for('static', filename='js/ace/theme-tomorrow.js') }}"></script>
@@ -21,9 +22,25 @@ var ckeditor;
 window.onload = function() {
 	ckeditor = CKEDITOR.replace('editor', {
 		fullPage: true,
+		extraPlugins: 'docprops',
 		htmlEncodeOutput: false,
+		resize_dir: 'vertical',
+		height: 400,
+		toolbar: [
+			['Bold', 'Italic', 'Underline', '-', 'TextColor', 'BGColor'],
+			['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', 'Blockquote'],
+			['Format', 'Font', 'FontSize'],
+			['Link', 'Unlink', 'Image', 'Table', '-', 'DocProps'],
+		],
+		font_names:
+			'Arial/Arial, sans-serif;' +
+			'Helvetica, sans-serif;' +
+			'Georgia/Georgia, serif;' +
+			'Times New Roman/Times New Roman, Times, serif;' +
+			'Trebuchet MS/Trebuchet MS, Helvetica, sans-serif;' +
+			'Verdana/Verdana, Geneva, sans-serif',
 		on: {
-			instanceReady: function() {
+			instanceReady: function(evt) {
 				this.dataProcessor.writer.setRules('p', {
 					breakAfterOpen: false
 				});
@@ -81,7 +98,7 @@ function get_editor_data() {
 
 {% block headercontent %}
 <button id="save" class="btn btn-primary">Save</button>
-<a class="btn" href="//{{ domain }}/{{ path }}">View Online</a>
+<a target="_blank" class="btn" href="//{{ domain }}/{{ path }}">View Online</a>
 <button id="mode" class="btn">
 {%- if visual %}
 Switch to HTML
